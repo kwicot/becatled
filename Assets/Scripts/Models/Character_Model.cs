@@ -9,4 +9,7 @@ public class Character_Model
     public float MoveSpeed;
     public float HP;
     public float Damage;
+    public float AggressiveDistance;
+    public float AttackDistance;
+    public float AttackSpeed;
 }

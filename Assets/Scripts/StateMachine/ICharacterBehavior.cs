@@ -8,7 +8,7 @@ namespace Becatled.CharacterCore.StateMachine
 {
     public interface ICharacterBehavior
     {
-        public CharacterBase CharacterBase { get; set; }
+        public CharacterBase characterBase { get; set; }
         public Animator _animator { get; set; }
         void Enter(CharacterBase characterBase,Animator animator);
         void Exit();

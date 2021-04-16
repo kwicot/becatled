@@ -1,18 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using Pathfinding;
 
 namespace Becatled.CharacterCore.StateMachine
 {
     public class CharacterBehaviorAggressive : MonoBehaviour, ICharacterBehavior
     {
-        public CharacterBase CharacterBase { get; set; }
+        public CharacterBase characterBase { get; set; }
         public Animator _animator { get; set; }
 
-        public void Enter(CharacterBase characterBase,Animator animator)
+        public void Enter(CharacterBase _characterBase,Animator animator)
         {
-            CharacterBase = characterBase;
-            _animator = animator;
             Debug.Log(("Enter aggressive behavior"));
+            characterBase = _characterBase;
+            _animator = animator;
+            var a = characterBase.GetClosets();
+            if (a != null)
+                characterBase.AI.target = a;
+            _animator.Play("Run");
         }
 
         public void Exit()
@@ -22,12 +28,19 @@ namespace Becatled.CharacterCore.StateMachine
 
         public void Update()
         {
-            Debug.Log(("Update aggressive behavior"));
+            var closets = characterBase.GetClosets();
+            if (closets != null)
+            {
+                var dis = Vector3.Distance(characterBase.transform.position,
+                    closets.position);
+                if (dis < characterBase._model.AttackDistance)
+                    characterBase.SetBehaviorAttack();
+            }
         }
 
         public void FixedUpdate()
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

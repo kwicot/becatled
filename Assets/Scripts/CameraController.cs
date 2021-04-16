@@ -36,7 +36,7 @@ namespace Becatled.Controll
             
             
             Vector3 mousePos = Vector3.zero;
-            if (Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out RaycastHit hit,LayerMask))
+            if (Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out RaycastHit hit,1000,LayerMask))
             {
                 mousePos = hit.point;
                 pointer.transform.position= mousePos;
@@ -52,7 +52,7 @@ namespace Becatled.Controll
         {
             float x = Input.GetAxis("X");
             float y = Input.GetAxis("Y");
-            float z = Input.GetAxis("Z");
+            float z = Input.GetAxis("Z") / 2;
             Vector3 dir = new Vector3(x, y, z);
             transform.Translate(dir * Speed);
         }

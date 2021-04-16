@@ -5,29 +5,40 @@ namespace Becatled.CharacterCore.StateMachine
 {
     public class CharacterBehaviorIdle : MonoBehaviour, ICharacterBehavior
     {
-        public CharacterBase CharacterBase { get; set; }
+        public CharacterBase characterBase { get; set; }
         public Animator _animator { get; set; }
 
         public void Enter(CharacterBase characterBase,Animator animator)
         {
-            CharacterBase = characterBase;
+            Debug.Log("Enter idle behavior");
+            this.characterBase = characterBase;
             _animator = animator;
-            Debug.Log(("Enter idle behavior"));
+            _animator.Play("Idle");
         }
 
         public void Exit()
         {
-            Debug.Log(("Exit idle behavior"));
+            Debug.Log("Exit idle behavior");
         }
 
         public void Update()
         {
-            Debug.Log(("Update idle behavior"));
+            var closets = characterBase.GetClosets();
+            if (closets != null)
+            {
+                var dis = Vector3.Distance(characterBase.transform.position,
+                    closets.position);
+                if (dis < characterBase._model.AggressiveDistance)
+                {
+                    if(dis < characterBase._model.AttackDistance) characterBase.SetBehaviorAttack();
+                    else characterBase.SetBehaviorAggressive();
+                }
+            }
         }
+        
 
         public void FixedUpdate()
         {
-            throw new NotImplementedException();
         }
     }
 }

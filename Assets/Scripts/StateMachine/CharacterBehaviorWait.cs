@@ -5,29 +5,36 @@ namespace Becatled.CharacterCore.StateMachine
 {
     public class CharacterBehaviorWait : MonoBehaviour, ICharacterBehavior
     {
-        public CharacterBase CharacterBase { get; set; }
+        public CharacterBase characterBase { get; set; }
         public Animator _animator { get; set; }
 
+        private float timeToAttack;
         public void Enter(CharacterBase characterBase,Animator animator)
         {
-            CharacterBase = characterBase;
+            this.characterBase = characterBase;
             _animator = animator;
-            Debug.Log(("Enter wait behavior"));
+            _animator.Play("Idle");
+            timeToAttack = characterBase._model.AttackSpeed;
         }
 
         public void Exit()
         {
-            Debug.Log(("Exit wait behavior"));
         }
 
         public void Update()
         {
-            Debug.Log(("Update wait behavior"));
+            timeToAttack -= Time.deltaTime;
+            var closets = characterBase.GetClosets();
+            if (timeToAttack <= 0)
+            {
+                characterBase.SetBehaviorIdle();
+            }
         }
 
         public void FixedUpdate()
         {
-            throw new NotImplementedException();
         }
+
+        
     }
 }

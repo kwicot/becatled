@@ -27,6 +27,7 @@ namespace Becatled.Spawn
         public void SpawnKnight(Vector3 pos)
         {
             //TODO спавн рыцаря
+            Instantiate(Knight, pos, Quaternion.identity);
         }
     }
 }

@@ -5,14 +5,18 @@ namespace Becatled.CharacterCore.StateMachine
 {
     public class CharacterBehaviorAttack : MonoBehaviour, ICharacterBehavior
     {
-        public CharacterBase CharacterBase { get; set; }
+        public CharacterBase characterBase { get; set; }
         public Animator _animator { get; set; }
+
+        private CharacterBase enemy;
 
         public void Enter(CharacterBase characterBase,Animator animator)
         {
-            CharacterBase = characterBase;
+            this.characterBase = characterBase;
             _animator = animator;
+            _animator.Play("Attack");
             Debug.Log(("Enter attack behavior"));
+            characterBase.SelectedCharacter = this.characterBase.GetClosets().GetComponent<CharacterBase>();
         }
 
         public void Exit()
@@ -22,12 +26,13 @@ namespace Becatled.CharacterCore.StateMachine
 
         public void Update()
         {
-            Debug.Log(("Update attack behavior"));
+            
         }
 
         public void FixedUpdate()
         {
-            throw new NotImplementedException();
         }
+        
+        
     }
 }
