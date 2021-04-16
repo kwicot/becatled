@@ -24,7 +24,6 @@ namespace Becatled.CharacterCore.StateMachine
         public void Update()
         {
             timeToAttack -= Time.deltaTime;
-            var closets = characterBase.GetClosets();
             if (timeToAttack <= 0)
             {
                 characterBase.SetBehaviorIdle();

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Becatled.Character;
 using Becatled.CharacterCore.StateMachine;
 using Pathfinding;
 using UnityEngine;
@@ -19,7 +20,7 @@ namespace Becatled.CharacterCore
         protected ICharacterBehavior behaviorCurrent;
 
         public Character_Model _model;
-        public CharacterBase SelectedCharacter;
+        public CharacterBase SelectedEnemy;
         public Animator _animator { get; private set; }
         public AIDestinationSetter AI { get; private set; }
 
@@ -75,9 +76,6 @@ namespace Becatled.CharacterCore
             var type = typeof(T);
             return behaviorsMap[type];
         }
-
-        
-
         public void SetBehaviorIdle()
         {
             var behavior = GetBehavior<CharacterBehaviorIdle>();
@@ -119,11 +117,20 @@ namespace Becatled.CharacterCore
                 return closets;
             }
             return null;
-        } 
+        }
+
+        public void MakeDamage(float dmg)
+        {
+            _model.HP -= dmg;
+            if (_model.HP <= 0)
+            {
+                //TODO смерть
+            }
+        }
         public void DoMeleeDamage()
         {
             Debug.Log("Attack");
-            SelectedCharacter._model.HP -= _model.Damage;
+            SelectedEnemy.MakeDamage(_model.Damage);
         }
 
         public void EndMeleeAttack()
@@ -135,10 +142,15 @@ namespace Becatled.CharacterCore
 
         private void OnTriggerEnter(Collider other)
         {
-            if(other.TryGetComponent(out CharacterBase characterBase) && other.gameObject != gameObject)
-            {
-                L_CharacterBase.Add(characterBase);
-                Debug.Log(other.name);
+            if(other.TryGetComponent(out CharacterBase characterBase))
+            { 
+                var main = this.GetType();
+                var target = characterBase.GetType();
+                if (other.gameObject != gameObject && main != target)
+                {
+                    L_CharacterBase.Add(characterBase);
+                    Debug.Log(other.name);
+                }
             }
         }
 

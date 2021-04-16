@@ -12,4 +12,5 @@ public class Character_Model
     public float AggressiveDistance;
     public float AttackDistance;
     public float AttackSpeed;
+    
 }

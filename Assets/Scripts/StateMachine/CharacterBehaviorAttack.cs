@@ -16,7 +16,7 @@ namespace Becatled.CharacterCore.StateMachine
             _animator = animator;
             _animator.Play("Attack");
             Debug.Log(("Enter attack behavior"));
-            characterBase.SelectedCharacter = this.characterBase.GetClosets().GetComponent<CharacterBase>();
+            characterBase.SelectedEnemy = this.characterBase.GetClosets().GetComponent<CharacterBase>();
         }
 
         public void Exit()

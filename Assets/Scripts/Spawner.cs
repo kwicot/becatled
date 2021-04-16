@@ -19,14 +19,11 @@ namespace Becatled.Spawn
 
         public void SpawnBarbarian(Vector3 pos)
         {
-            //TODO спавн варвара
-            GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            obj.transform.position = pos;
+            Instantiate(Barbarian, pos, Quaternion.identity);
         }
 
         public void SpawnKnight(Vector3 pos)
         {
-            //TODO спавн рыцаря
             Instantiate(Knight, pos, Quaternion.identity);
         }
     }
