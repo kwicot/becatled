@@ -91,14 +91,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34def073acfe456389d0588389e30c20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _model:
-    MoveSpeed: 0
-    HP: 0
-    Damage: 0
-    AggressiveDistance: 0
-    AttackDistance: 0
-    AttackSpeed: 0
-  SelectedCharacter: {fileID: 0}
   trigger: {fileID: 6700146745652382753}
 --- !u!114 &5808774767084196501
 MonoBehaviour:
@@ -312,6 +304,14 @@ PrefabInstance:
     - target: {fileID: 6823905525868499560, guid: 523e81c6cb47009418e07de8efd53fb0, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7443153702856930483, guid: 523e81c6cb47009418e07de8efd53fb0, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7443153702856930483, guid: 523e81c6cb47009418e07de8efd53fb0, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7702825190297961605, guid: 523e81c6cb47009418e07de8efd53fb0, type: 3}
       propertyPath: m_Layer

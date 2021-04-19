@@ -1,27 +1,23 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Becatled.CharacterCore.StateMachine
+namespace Becatled.CharacterCore.StateMachineCore
 {
     public class CharacterBehaviorAttack : MonoBehaviour, ICharacterBehavior
     {
-        public CharacterBase characterBase { get; set; }
-        public Animator _animator { get; set; }
-
+        public CharacterBase Character { get; set; }
         private CharacterBase enemy;
 
-        public void Enter(CharacterBase controller,Animator animator)
+        public void Enter(CharacterBase controller,CharacterBase _enemy = null)
         {
-            characterBase = controller;
-            _animator = animator;
-            _animator.Play("Attack");
-            Debug.Log(("Enter attack behavior"));
-            controller.SelectedEnemy = this.characterBase.GetClosets().GetComponent<CharacterBase>();
+            //Debug.Log(("Enter attack behavior"));
+            Character = controller;
+            Character._animator.Play("Attack");
         }
 
         public void Exit()
         {
-            Debug.Log(("Exit attack behavior"));
+            //Debug.Log(("Exit attack behavior"));
         }
 
         public void Update()

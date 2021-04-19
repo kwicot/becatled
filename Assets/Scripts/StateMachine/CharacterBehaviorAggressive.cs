@@ -3,44 +3,53 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
 
-namespace Becatled.CharacterCore.StateMachine
+namespace Becatled.CharacterCore.StateMachineCore
 {
     public class CharacterBehaviorAggressive : MonoBehaviour, ICharacterBehavior
     {
-        public CharacterBase characterBase { get; set; }
-        public Animator _animator { get; set; }
+        public CharacterBase Character { get; set; }
+        private CharacterBase enemy;
 
-        public void Enter(CharacterBase controller,Animator animator)
+
+        private ICharacterBehavior deathState;
+        private ICharacterBehavior enemyState;
+
+        public void Enter(CharacterBase controller,CharacterBase _enemy = null)
         {
-            Debug.Log(("Enter aggressive behavior"));
-            characterBase = controller;
-            _animator = animator;
-            var a = characterBase.GetClosets().transform;
-            if (a != null)
-                characterBase.AI.target = a;
-            _animator.Play("Run");
+            //Debug.Log(("Enter aggressive behavior"));
+            Character = controller;
+            enemy = _enemy;
+            if (enemy != null)
+            {
+                Character.AI.target = enemy.transform;
+                Character._animator.Play("Run");
+            }
+            else
+                Character.stateMachine.SetBehaviorIdle();
+
+            deathState = Character.stateMachine.GetBehavior<CharacterBehaviorDeath>();
+            enemyState  = enemy.stateMachine.behaviorCurrent;
         }
+        
 
         public void Exit()
         {
-            Debug.Log(("Exit aggressive behavior"));
+            //Debug.Log(("Exit aggressive behavior"));
         }
 
         public void Update()
         {
-            var closets = characterBase.GetClosets();
-            var enemyState = closets.behaviorCurrent;
-            var deathState = characterBase.GetBehavior<CharacterBehaviorDeath>();
-            if (closets != null && enemyState != deathState)
+            if (enemy != null && enemyState != deathState)
             {
-                var dis = Vector3.Distance(characterBase.transform.position,
-                    closets.transform.position);
-                if (dis < characterBase._model.AttackDistance)
-                    characterBase.SetBehaviorAttack();
+                var dis = Vector3.Distance(Character.transform.position,
+                    enemy.transform.position);
+                if (dis < Character._model.AttackDistance)
+                    Character.stateMachine.SetBehaviorAttack(enemy);
             }
-            else if (enemyState == deathState)
+            else if (enemyState == deathState | enemy == null)
             {
-                characterBase.SetBehaviorIdle();
+                Character.stateMachine.SetBehaviorIdle();
+                Character.SelectedEnemy = null;
             }
         }
 

@@ -1,32 +1,49 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Becatled.CharacterCore.StateMachine
+namespace Becatled.CharacterCore.StateMachineCore
 {
     public class CharacterBehaviorWait : MonoBehaviour, ICharacterBehavior
     {
-        public CharacterBase characterBase { get; set; }
-        public Animator _animator { get; set; }
+        public CharacterBase Character { get; set; }
+        private CharacterBase enemy;
 
         private float timeToAttack;
-        public void Enter(CharacterBase controller,Animator animator)
+        public void Enter(CharacterBase controller,CharacterBase _enemy = null)
         {
-            characterBase = controller;
-            _animator = animator;
-            _animator.Play("Idle");
-            timeToAttack = controller._model.AttackSpeed;
+            //Debug.Log("Enter wait state");
+            Character = controller;
+            timeToAttack = Character._model.AttackSpeed;
+            enemy = _enemy;
+            Character._animator.Play("Wait");
         }
 
         public void Exit()
         {
+            //Debug.Log("Exit wait state");
         }
+
 
         public void Update()
         {
             timeToAttack -= Time.deltaTime;
-            if (timeToAttack <= 0)
+            if (enemy == null)
             {
-                characterBase.SetBehaviorIdle();
+                Character.stateMachine.SetBehaviorIdle();
+                Character.SelectedEnemy = null;
+            }
+            else if (timeToAttack <= 0 && enemy != null)
+            {
+                var dis = Vector3.Distance(Character.transform.position,
+                    enemy.transform.position);
+                if (dis < Character._model.AggressiveDistance)
+                {
+                    if (dis < Character._model.AttackDistance)
+                    {
+                        Character.stateMachine.SetBehaviorAttack(enemy);
+                    }
+                    else Character.stateMachine.SetBehaviorAggressive(enemy);
+                }
             }
         }
 

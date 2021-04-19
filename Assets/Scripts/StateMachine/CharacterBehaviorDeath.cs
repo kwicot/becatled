@@ -1,23 +1,18 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Becatled.CharacterCore.StateMachine
+namespace Becatled.CharacterCore.StateMachineCore
 {
     public class CharacterBehaviorDeath : MonoBehaviour, ICharacterBehavior
     {
-        public CharacterBase characterBase { get; set; }
-        public Animator _animator { get; set; }
-        public void Enter(CharacterBase controller, Animator animator)
+        public CharacterBase Character { get; set; }
+        public void Enter(CharacterBase controller,CharacterBase _enemy = null)
         {
-            characterBase = controller;
-            _animator = animator;
-            _animator.enabled = false;
-            
-            MeshRenderer meshRenderer = gameObject.GetComponent<MeshRenderer>();
-            Material newMat = new Material(meshRenderer.sharedMaterial);
-            Color newColor = meshRenderer.sharedMaterial.color;
-            newColor.a = 50;
-            newMat.color = newColor;
+            Character = controller;
+            Character._animator.enabled = false;
+
+            SkinnedMeshRenderer meshRenderer = Character.gameObject.GetComponentInChildren<SkinnedMeshRenderer>();
+            Material newMat = new Material(meshRenderer.material);
             meshRenderer.material = newMat;
         }
 
@@ -28,12 +23,12 @@ namespace Becatled.CharacterCore.StateMachine
 
         public void Update()
         {
-            transform.Translate(Vector3.down * Time.deltaTime);
+            Debug.Log("DeathUpdate");
+            Character.transform.Translate(Vector3.down);
         }
 
         public void FixedUpdate()
         {
-            throw new System.NotImplementedException();
         }
     }
 }
