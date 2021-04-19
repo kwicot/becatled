@@ -10,13 +10,13 @@ namespace Becatled.CharacterCore.StateMachine
 
         private CharacterBase enemy;
 
-        public void Enter(CharacterBase characterBase,Animator animator)
+        public void Enter(CharacterBase controller,Animator animator)
         {
-            this.characterBase = characterBase;
+            characterBase = controller;
             _animator = animator;
             _animator.Play("Attack");
             Debug.Log(("Enter attack behavior"));
-            characterBase.SelectedEnemy = this.characterBase.GetClosets().GetComponent<CharacterBase>();
+            controller.SelectedEnemy = this.characterBase.GetClosets().GetComponent<CharacterBase>();
         }
 
         public void Exit()

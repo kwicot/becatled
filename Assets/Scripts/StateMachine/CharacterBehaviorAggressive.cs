@@ -10,12 +10,12 @@ namespace Becatled.CharacterCore.StateMachine
         public CharacterBase characterBase { get; set; }
         public Animator _animator { get; set; }
 
-        public void Enter(CharacterBase _characterBase,Animator animator)
+        public void Enter(CharacterBase controller,Animator animator)
         {
             Debug.Log(("Enter aggressive behavior"));
-            characterBase = _characterBase;
+            characterBase = controller;
             _animator = animator;
-            var a = characterBase.GetClosets();
+            var a = characterBase.GetClosets().transform;
             if (a != null)
                 characterBase.AI.target = a;
             _animator.Play("Run");
@@ -29,12 +29,18 @@ namespace Becatled.CharacterCore.StateMachine
         public void Update()
         {
             var closets = characterBase.GetClosets();
-            if (closets != null)
+            var enemyState = closets.behaviorCurrent;
+            var deathState = characterBase.GetBehavior<CharacterBehaviorDeath>();
+            if (closets != null && enemyState != deathState)
             {
                 var dis = Vector3.Distance(characterBase.transform.position,
-                    closets.position);
+                    closets.transform.position);
                 if (dis < characterBase._model.AttackDistance)
                     characterBase.SetBehaviorAttack();
+            }
+            else if (enemyState == deathState)
+            {
+                characterBase.SetBehaviorIdle();
             }
         }
 

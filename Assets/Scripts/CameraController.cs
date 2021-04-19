@@ -45,7 +45,7 @@ namespace Becatled.Controll
             else return;
             if(Input.GetKeyDown(KeyCode.Alpha1)) spawner.SpawnKnight(mousePos); 
             if(Input.GetKeyDown(KeyCode.Alpha2)) spawner.SpawnBarbarian(mousePos);
-            if(Input.GetKeyDown(KeyCode.X)) spawner.SpawnAsteroid(mousePos);
+            if(Input.GetMouseButtonDown(0)) spawner.SpawnAsteroid(mousePos);
         }
 
         void MoveUpdate()

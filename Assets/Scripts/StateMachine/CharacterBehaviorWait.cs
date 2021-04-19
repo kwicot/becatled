@@ -9,12 +9,12 @@ namespace Becatled.CharacterCore.StateMachine
         public Animator _animator { get; set; }
 
         private float timeToAttack;
-        public void Enter(CharacterBase characterBase,Animator animator)
+        public void Enter(CharacterBase controller,Animator animator)
         {
-            this.characterBase = characterBase;
+            characterBase = controller;
             _animator = animator;
             _animator.Play("Idle");
-            timeToAttack = characterBase._model.AttackSpeed;
+            timeToAttack = controller._model.AttackSpeed;
         }
 
         public void Exit()

@@ -10,7 +10,7 @@ namespace Becatled.CharacterCore.StateMachine
     {
         public CharacterBase characterBase { get; set; }
         public Animator _animator { get; set; }
-        void Enter(CharacterBase characterBase,Animator animator);
+        void Enter(CharacterBase controller,Animator animator);
         void Exit();
         void Update();
 

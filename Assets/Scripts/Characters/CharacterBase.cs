@@ -17,7 +17,7 @@ namespace Becatled.CharacterCore
     public class CharacterBase : MonoBehaviour
     {
         protected Dictionary<Type, ICharacterBehavior> behaviorsMap;
-        protected ICharacterBehavior behaviorCurrent;
+        public ICharacterBehavior behaviorCurrent { get; protected set; }
 
         public Character_Model _model;
         public CharacterBase SelectedEnemy;
@@ -62,6 +62,7 @@ namespace Becatled.CharacterCore
             behaviorsMap[typeof(CharacterBehaviorWait)] = new CharacterBehaviorWait();
             behaviorsMap[typeof(CharacterBehaviorAttack)] = new CharacterBehaviorAttack();
             behaviorsMap[typeof(CharacterBehaviorAggressive)] = new CharacterBehaviorAggressive();
+            behaviorsMap[typeof(CharacterBehaviorDeath)] = new CharacterBehaviorDeath();
         }
         protected void SetBehavior(ICharacterBehavior behavior)
         {
@@ -71,11 +72,13 @@ namespace Becatled.CharacterCore
             behaviorCurrent = behavior;
             behaviorCurrent.Enter(this,_animator);
         }
-        protected ICharacterBehavior GetBehavior<T>() where T : ICharacterBehavior
+        public ICharacterBehavior GetBehavior<T>() where T : ICharacterBehavior
         {
             var type = typeof(T);
             return behaviorsMap[type];
         }
+
+        
         public void SetBehaviorIdle()
         {
             var behavior = GetBehavior<CharacterBehaviorIdle>();
@@ -99,18 +102,31 @@ namespace Becatled.CharacterCore
             var behavior = GetBehavior<CharacterBehaviorAttack>();
             SetBehavior(behavior);
         }
-        public Transform GetClosets()
+
+        void SetBehaviorDeath()
+        {
+            var behavior = GetBehavior<CharacterBehaviorDeath>();
+            SetBehavior(behavior);
+        }
+        public CharacterBase GetClosets()
         {
             if (L_CharacterBase.Count > 0)
             {
-                Transform closets = L_CharacterBase[0].transform;
-                float bestdis = Vector3.Distance(transform.position, closets.position);
+                CharacterBase closets = L_CharacterBase[0];
+                float bestdis = Vector3.Distance(transform.position, closets.transform.position);
                 foreach (var selected in L_CharacterBase)
                 {
                     float distance = Vector3.Distance(transform.position, selected.transform.position);
+                    var enemyState = selected.behaviorCurrent;
+                    var deathState = GetBehavior<CharacterBehaviorDeath>();
+                    if (enemyState == deathState)
+                    {
+                        L_CharacterBase.Remove(selected);
+                        continue;
+                    }
                     if (distance < bestdis)
                     {
-                        closets = selected.transform;
+                        closets = selected;
                         bestdis = distance;
                     }
                 }
@@ -139,7 +155,6 @@ namespace Becatled.CharacterCore
             SetBehaviorWait();
         }
 
-
         private void OnTriggerEnter(Collider other)
         {
             if(other.TryGetComponent(out CharacterBase characterBase))
@@ -148,8 +163,13 @@ namespace Becatled.CharacterCore
                 var target = characterBase.GetType();
                 if (other.gameObject != gameObject && main != target)
                 {
-                    L_CharacterBase.Add(characterBase);
-                    Debug.Log(other.name);
+                    var enemyState = characterBase.behaviorCurrent;
+                    var deathState = GetBehavior<CharacterBehaviorDeath>();
+                    if (enemyState != deathState)
+                    {
+                        L_CharacterBase.Add(characterBase);
+                        Debug.Log(other.name);
+                    }
                 }
             }
         }

@@ -8,10 +8,10 @@ namespace Becatled.CharacterCore.StateMachine
         public CharacterBase characterBase { get; set; }
         public Animator _animator { get; set; }
 
-        public void Enter(CharacterBase characterBase,Animator animator)
+        public void Enter(CharacterBase controller,Animator animator)
         {
             Debug.Log("Enter idle behavior");
-            this.characterBase = characterBase;
+            characterBase = controller;
             _animator = animator;
             _animator.Play("Idle");
         }
@@ -27,7 +27,7 @@ namespace Becatled.CharacterCore.StateMachine
             if (closets != null)
             {
                 var dis = Vector3.Distance(characterBase.transform.position,
-                    closets.position);
+                    closets.transform.position);
                 if (dis < characterBase._model.AggressiveDistance)
                 {
                     if(dis < characterBase._model.AttackDistance) characterBase.SetBehaviorAttack();

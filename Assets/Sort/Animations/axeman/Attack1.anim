@@ -29754,14 +29754,14 @@ AnimationClip:
   - time: 0.8
     functionName: DoMeleeDamage
     data: 
-    objectReferenceParameter: {fileID: 0}
+    objectReferenceParameter: {fileID: 11500000, guid: 05db8cac4e4c0424ab370aef06cea639, type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 1.1666666
     functionName: EndMeleeAttack
     data: 
-    objectReferenceParameter: {fileID: 0}
+    objectReferenceParameter: {fileID: 11500000, guid: 05db8cac4e4c0424ab370aef06cea639, type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
