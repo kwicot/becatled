@@ -26,25 +26,34 @@ namespace Becatled.CharacterCore.StateMachineCore
 
         public void Update()
         {
-            timeToAttack -= Time.deltaTime;
-            if (enemy == null)
+            try
             {
-                Character.stateMachine.SetBehaviorIdle();
-                Character.SelectedEnemy = null;
-            }
-            else if (timeToAttack <= 0 && enemy != null)
-            {
-                var dis = Vector3.Distance(Character.transform.position,
-                    enemy.transform.position);
-                if (dis < Character._model.AggressiveDistance)
+                timeToAttack -= Time.deltaTime;
+                if (enemy == null)
                 {
-                    if (dis < Character._model.AttackDistance)
+                    Character.stateMachine.SetBehaviorIdle();
+                    Character.SelectedEnemy = null;
+                }
+                else if (timeToAttack <= 0 && enemy != null)
+                {
+                    var dis = Vector3.Distance(Character.transform.position,
+                        enemy.transform.position);
+                    if (dis < Character._model.AggressiveDistance)
                     {
-                        Character.stateMachine.SetBehaviorAttack(enemy);
+                        if (dis < Character._model.AttackDistance)
+                        {
+                            Character.stateMachine.SetBehaviorAttack(enemy);
+                        }
+                        else Character.stateMachine.SetBehaviorAggressive(enemy);
                     }
-                    else Character.stateMachine.SetBehaviorAggressive(enemy);
                 }
             }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+                Character.stateMachine.SetBehaviorIdle();
+            }
+           
         }
 
         public void FixedUpdate()

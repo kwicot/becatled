@@ -90,7 +90,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Character_AnimationController
+  m_Name: Character_AnimationController_Axe
   serializedVersion: 5
   m_AnimatorParameters: []
   m_AnimatorLayers:
@@ -152,7 +152,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 0a655d2d5667958439abb4da50464d73, type: 2}
+  m_Motion: {fileID: 7400000, guid: 8c2f8487d0beda54781f33772e578728, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

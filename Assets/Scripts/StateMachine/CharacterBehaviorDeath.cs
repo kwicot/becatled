@@ -9,11 +9,8 @@ namespace Becatled.CharacterCore.StateMachineCore
         public void Enter(CharacterBase controller,CharacterBase _enemy = null)
         {
             Character = controller;
-            Character._animator.enabled = false;
-
-            SkinnedMeshRenderer meshRenderer = Character.gameObject.GetComponentInChildren<SkinnedMeshRenderer>();
-            Material newMat = new Material(meshRenderer.material);
-            meshRenderer.material = newMat;
+            
+            Character.RagdollOn();
         }
 
         public void Exit()
@@ -23,8 +20,7 @@ namespace Becatled.CharacterCore.StateMachineCore
 
         public void Update()
         {
-            Debug.Log("DeathUpdate");
-            Character.transform.Translate(Vector3.down);
+            
         }
 
         public void FixedUpdate()

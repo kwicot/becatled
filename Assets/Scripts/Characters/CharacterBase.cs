@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using Becatled.Character;
 using Becatled.CharacterCore.StateMachineCore;
 using Pathfinding;
@@ -8,12 +9,6 @@ using UnityEngine;
 
 namespace Becatled.CharacterCore
 {
-    [RequireComponent(
-        typeof(Animator),
-        typeof(CapsuleCollider),
-        typeof(CharacterController)
-        
-        )]
     public class CharacterBase : MonoBehaviour
     {
         public StateMachine stateMachine { get; protected set; }
@@ -27,6 +22,7 @@ namespace Becatled.CharacterCore
 
         void Start()
         {
+            RagdollOff();
             AI = GetComponent<AIDestinationSetter>();
             _animator = GetComponent<Animator>();
             L_CharacterBase = new List<CharacterBase>();
@@ -50,29 +46,58 @@ namespace Becatled.CharacterCore
         }
         public CharacterBase GetClosets()
         {
-            if (L_CharacterBase.Count > 0)
-            {
-                CharacterBase closets = L_CharacterBase[0];
-                float bestDistance = Vector3.Distance(transform.position, closets.transform.position);
-                foreach (var selected in L_CharacterBase)
-                {
-                    float distance = Vector3.Distance(transform.position, selected.transform.position);
-                    var enemyState = selected.stateMachine.behaviorCurrent;
-                    var deathState = stateMachine.GetBehavior<CharacterBehaviorDeath>();
-                    if (enemyState == deathState)
-                    {
-                        L_CharacterBase.Remove(selected);
-                        continue;
-                    }
-                    if (distance < bestDistance)
-                    {
-                        closets = selected;
-                        bestDistance = distance;
-                    }
-                }
-                return closets;
-            }
-            return null;
+            //for (int i = L_CharacterBase.Count-1; i >= 0; i--)
+           //if(L_CharacterBase[i] == null) L_CharacterBase.RemoveAt(i);
+        
+           // if (L_CharacterBase.Count > 0)
+           // {
+           try
+           {
+               CharacterBase closets = null;
+               float bestDistance = 1000;
+               foreach (var selected in L_CharacterBase)
+               {
+                   float distance = Vector3.Distance(transform.position, selected.transform.position);
+                   if (distance < bestDistance)
+                   {
+                       closets = selected;
+                       bestDistance = distance;
+                   }
+               }
+
+               return closets;
+           }
+           catch (NullReferenceException e)
+           {
+               Debug.LogWarning(e);
+               foreach (var enemy in L_CharacterBase)
+               {
+                   if (enemy == null)
+                   {
+                       L_CharacterBase.Remove(enemy);
+                       break;
+                   }
+               }
+
+               return null;
+           }
+           catch (MissingReferenceException e)
+           {
+               Debug.LogWarning("Deleted- "+e);
+               foreach (var enemy in L_CharacterBase)
+               {
+                   if (enemy == null)
+                   {
+                       L_CharacterBase.Remove(enemy);
+                       break;
+                   }
+               }
+
+               return null;
+           }
+                
+           // }
+           // return null;
         }
 
         public void MakeDamage(float dmg)
@@ -86,6 +111,7 @@ namespace Becatled.CharacterCore
         public void DoMeleeDamage()
         {
             Debug.Log("Attack");
+            if(SelectedEnemy != null)
             SelectedEnemy.MakeDamage(_model.Damage);
         }
 
@@ -103,7 +129,7 @@ namespace Becatled.CharacterCore
             { 
                 var main = this.GetType();
                 var target = characterBase.GetType();
-                if (other.gameObject != gameObject && main != target)
+                if (main != target)
                 {
                     L_CharacterBase.Add(characterBase);
                     Debug.Log(other.name);
@@ -116,6 +142,49 @@ namespace Becatled.CharacterCore
             if(other.TryGetComponent(out CharacterBase characterBase))
             {
                 L_CharacterBase.Remove(characterBase);
+            }
+        }
+
+        public void RagdollOn()
+        {
+            Destroy(trigger);
+            Destroy(gameObject.GetComponent<CharacterController>());
+            Destroy(_animator);
+            Destroy(gameObject.GetComponent<AIDestinationSetter>());
+            Destroy(gameObject, 3f);
+
+            
+            
+            Collider[] colls = gameObject.GetComponentsInChildren<Collider>();
+            foreach (var col in colls)
+            {
+                col.enabled = true;
+            }
+            
+            Rigidbody[] rigidbodies = gameObject.GetComponentsInChildren<Rigidbody>();
+            foreach (var obj in rigidbodies)
+            {
+                obj.isKinematic = false;
+            }
+            Destroy(this);
+        }
+
+        public void RagdollOff()
+        {
+            Collider[] colls = gameObject.GetComponentsInChildren<Collider>();
+            foreach (var col in colls)
+            {
+                if (col != trigger && col != gameObject.GetComponent<CharacterController>())
+                {
+                    col.gameObject.layer = 8;
+                    col.enabled = false;
+                }
+            }
+
+            Rigidbody[] rigidbodies = gameObject.GetComponentsInChildren<Rigidbody>();
+            foreach (var obj in rigidbodies)
+            {
+                obj.isKinematic = true;
             }
         }
     }

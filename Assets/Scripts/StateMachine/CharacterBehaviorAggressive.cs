@@ -27,8 +27,7 @@ namespace Becatled.CharacterCore.StateMachineCore
             else
                 Character.stateMachine.SetBehaviorIdle();
 
-            deathState = Character.stateMachine.GetBehavior<CharacterBehaviorDeath>();
-            enemyState  = enemy.stateMachine.behaviorCurrent;
+            
         }
         
 
@@ -39,18 +38,34 @@ namespace Becatled.CharacterCore.StateMachineCore
 
         public void Update()
         {
-            if (enemy != null && enemyState != deathState)
+            Debug.Log("update");
+            try
             {
-                var dis = Vector3.Distance(Character.transform.position,
-                    enemy.transform.position);
-                if (dis < Character._model.AttackDistance)
-                    Character.stateMachine.SetBehaviorAttack(enemy);
+                Debug.Log("try");
+               // if (enemy != null && enemyState != deathState)
+               // {
+                    var dis = Vector3.Distance(Character.transform.position,
+                        enemy.transform.position);
+                    Debug.Log(dis);
+                    if (dis < Character._model.AttackDistance)
+                    {
+                        Character.stateMachine.SetBehaviorAttack(enemy);
+                        Character.AI.target = Character.transform;
+                    }
+               // }
+                //else if (enemy == null)
+               // {
+                //    Character.stateMachine.SetBehaviorIdle();
+                //    Character.SelectedEnemy = null;
+             //   }
             }
-            else if (enemyState == deathState | enemy == null)
+            catch (Exception e)
             {
+                Debug.LogError(e);
                 Character.stateMachine.SetBehaviorIdle();
-                Character.SelectedEnemy = null;
+                throw;
             }
+            
         }
 
         public void FixedUpdate()

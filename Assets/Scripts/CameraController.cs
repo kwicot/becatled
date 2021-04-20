@@ -31,7 +31,7 @@ namespace Becatled.Controll
 
         private void InputUpdate()
         {
-            if(Input.GetMouseButton(1)) RotationUpdate();
+            //if(Input.GetMouseButton(1)) RotationUpdate();
             
             
             
@@ -43,9 +43,9 @@ namespace Becatled.Controll
 
             }
             else return;
-            if(Input.GetKeyDown(KeyCode.Alpha1)) spawner.SpawnKnight(mousePos); 
-            if(Input.GetKeyDown(KeyCode.Alpha2)) spawner.SpawnBarbarian(mousePos);
-            if(Input.GetMouseButtonDown(0)) spawner.SpawnAsteroid(mousePos);
+            if(Input.GetMouseButtonDown(0)) spawner.SpawnKnight(mousePos); 
+            if(Input.GetMouseButtonDown(1)) spawner.SpawnBarbarian(mousePos);
+           // if(Input.GetMouseButtonDown(0)) spawner.SpawnAsteroid(mousePos);
         }
 
         void MoveUpdate()
