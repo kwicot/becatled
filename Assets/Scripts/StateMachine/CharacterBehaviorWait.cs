@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Becatled.CharacterCore.StateMachineCore
 {
-    public class CharacterBehaviorWait : MonoBehaviour, ICharacterBehavior
+    public class CharacterBehaviorWait : ICharacterBehavior
     {
         public CharacterBase Character { get; set; }
         private CharacterBase enemy;

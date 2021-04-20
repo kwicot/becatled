@@ -5,7 +5,7 @@ using Pathfinding;
 
 namespace Becatled.CharacterCore.StateMachineCore
 {
-    public class CharacterBehaviorAggressive : MonoBehaviour, ICharacterBehavior
+    public class CharacterBehaviorAggressive : ICharacterBehavior
     {
         public CharacterBase Character { get; set; }
         private CharacterBase enemy;
@@ -61,9 +61,8 @@ namespace Becatled.CharacterCore.StateMachineCore
             }
             catch (Exception e)
             {
-                Debug.LogError(e);
+                Debug.LogWarning(e);
                 Character.stateMachine.SetBehaviorIdle();
-                throw;
             }
             
         }

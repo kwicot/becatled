@@ -132,7 +132,6 @@ namespace Becatled.CharacterCore
                 if (main != target)
                 {
                     L_CharacterBase.Add(characterBase);
-                    Debug.Log(other.name);
                 }
             }
         }
@@ -165,6 +164,7 @@ namespace Becatled.CharacterCore
             foreach (var obj in rigidbodies)
             {
                 obj.isKinematic = false;
+                obj.AddForce(Vector3.up*20);
             }
             Destroy(this);
         }
@@ -185,6 +185,7 @@ namespace Becatled.CharacterCore
             foreach (var obj in rigidbodies)
             {
                 obj.isKinematic = true;
+                obj.mass = 1;
             }
         }
     }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Becatled.CharacterCore.StateMachineCore
 {
-    public class CharacterBehaviorDeath : MonoBehaviour, ICharacterBehavior
+    public class CharacterBehaviorDeath : ICharacterBehavior
     {
         public CharacterBase Character { get; set; }
         public void Enter(CharacterBase controller,CharacterBase _enemy = null)
