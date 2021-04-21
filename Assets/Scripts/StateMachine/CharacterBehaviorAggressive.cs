@@ -63,6 +63,7 @@ namespace Becatled.CharacterCore.StateMachineCore
             {
                 Debug.LogWarning(e);
                 Character.stateMachine.SetBehaviorIdle();
+                Character.AI.target = Character.transform;
             }
         }
     }

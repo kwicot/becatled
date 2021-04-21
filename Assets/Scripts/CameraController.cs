@@ -68,7 +68,7 @@ namespace Becatled.Controll
         {
             cameraHorizontal += Input.GetAxis("Mouse X") * 2;
             cameraVertical -= Input.GetAxis("Mouse Y") * 2;
-            transform.rotation = Quaternion.Euler(cameraVertical,cameraHorizontal,0);;
+            transform.rotation = Quaternion.Euler(cameraVertical, cameraHorizontal, 0);
         }
     }
 }

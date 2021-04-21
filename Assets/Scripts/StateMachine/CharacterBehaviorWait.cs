@@ -36,6 +36,7 @@ namespace Becatled.CharacterCore.StateMachineCore
                 }
                 else if (timeToAttack <= 0 && enemy != null)
                 {
+                    
                     var dis = Vector3.Distance(Character.transform.position,
                         enemy.transform.position);
                     if (dis < Character._model.AggressiveDistance)
