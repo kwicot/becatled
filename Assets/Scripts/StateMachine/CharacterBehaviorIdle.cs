@@ -21,6 +21,16 @@ namespace Becatled.CharacterCore.StateMachineCore
 
         public void Update()
         {
+            
+        }
+        
+
+        public void FixedUpdate()
+        {
+        }
+
+        public void CustomUpdate()
+        {
             var closets = Character.GetClosets();
             if (closets != null)
             {
@@ -37,11 +47,6 @@ namespace Becatled.CharacterCore.StateMachineCore
                 }
             }
             else Character.SelectedEnemy = null;
-        }
-        
-
-        public void FixedUpdate()
-        {
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Becatled.CharacterCore.StateMachineCore
         void Update();
 
         void FixedUpdate();
+        void CustomUpdate();
 
     }
 }

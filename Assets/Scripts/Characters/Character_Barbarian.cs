@@ -11,7 +11,7 @@ namespace Becatled.Character
             {
                 MoveSpeed = 10,
                 Damage = 10,
-                HP = 100,
+                HP = 20,
                 AggressiveDistance = 10,
                 AttackDistance = 1,
                 AttackSpeed = 0.5f

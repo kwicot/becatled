@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 using Becatled.CharacterCore;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace DefaultNamespace
@@ -9,35 +11,47 @@ namespace DefaultNamespace
     {
         public float KillRadius;
         public float Speed;
+        public ParticleSystem ExplosionParticle;
 
 
         private Rigidbody _rigidbody;
-        private CapsuleCollider trigger;
 
-
-        private void Start()
-        {
-            _rigidbody = GetComponent<Rigidbody>();
-            trigger = gameObject.AddComponent<CapsuleCollider>();
-            trigger.isTrigger = true;
-        }
 
         public void Throw(Vector3 direct)
         {
+            _rigidbody = GetComponent<Rigidbody>();
             _rigidbody.velocity = direct * Speed;
+        }
+
+        void Explosion()
+        {
+            Instantiate(ExplosionParticle, transform.position, quaternion.identity).Play();
+
+            CharacterBase[] characters = FindObjectsOfType<CharacterBase>();
+            foreach (var character in characters)
+            {
+                if (character != null)
+                {
+                    var dis = Vector3.Distance(transform.position, character.transform.position);
+                    if (dis < KillRadius)
+                    {
+                        character.MakeDamage(10000, false);
+                        
+                        Rigidbody[] _rigidbodies = character.gameObject.GetComponentsInChildren<Rigidbody>();
+                        foreach (var _rb in _rigidbodies)
+                        {
+                            var dir = (_rb.position - transform.position) * 400;
+                            _rb.AddForce(dir);
+                        }
+                    }
+                }
+            }
+            Destroy(gameObject);
         }
 
         private void OnCollisionEnter(Collision other)
         {
-            trigger.radius = KillRadius;
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if(other.TryGetComponent(out CharacterBase character))
-            {
-                character.MakeDamage(10000);
-            }
+            Explosion();
         }
     }
 }

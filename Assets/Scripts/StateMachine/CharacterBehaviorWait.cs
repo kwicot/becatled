@@ -53,13 +53,15 @@ namespace Becatled.CharacterCore.StateMachineCore
                 Debug.LogError(e);
                 Character.stateMachine.SetBehaviorIdle();
             }
-           
         }
 
         public void FixedUpdate()
         {
         }
 
-        
+        public void CustomUpdate()
+        {
+            
+        }
     }
 }

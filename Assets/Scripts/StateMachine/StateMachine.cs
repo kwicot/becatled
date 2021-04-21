@@ -32,7 +32,6 @@ namespace Becatled.CharacterCore.StateMachineCore
             behaviorsMap[typeof(CharacterBehaviorWait)] = new CharacterBehaviorWait();
             behaviorsMap[typeof(CharacterBehaviorAttack)] = new CharacterBehaviorAttack();
             behaviorsMap[typeof(CharacterBehaviorAggressive)] = new CharacterBehaviorAggressive();
-            behaviorsMap[typeof(CharacterBehaviorDeath)] = new CharacterBehaviorDeath();
         }
         protected void SetBehavior(ICharacterBehavior behavior)
         {
@@ -101,12 +100,6 @@ namespace Becatled.CharacterCore.StateMachineCore
         {
             var behavior = GetBehavior<CharacterBehaviorAttack>();
             SetBehavior(behavior,enemy);
-        }
-
-        public void SetBehaviorDeath()
-        {
-            var behavior = GetBehavior<CharacterBehaviorDeath>();
-            SetBehavior(behavior);
         }
 
 

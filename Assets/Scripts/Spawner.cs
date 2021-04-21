@@ -14,9 +14,8 @@ namespace Becatled.Spawn
 
         public void SpawnAsteroid(Vector3 targetPos)
         {
-            //TODO спавн астероида
-            var direct = transform.position - targetPos;
             GameObject asteroid = Instantiate(Asteroid, targetPos + (Vector3.up * 15), Quaternion.identity);
+            var direct = targetPos - asteroid.transform.position;
             asteroid.GetComponent<Asteroid>().Throw(direct);
 
         }

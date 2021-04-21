@@ -38,38 +38,32 @@ namespace Becatled.CharacterCore.StateMachineCore
 
         public void Update()
         {
-            Debug.Log("update");
-            try
-            {
-                Debug.Log("try");
-               // if (enemy != null && enemyState != deathState)
-               // {
-                    var dis = Vector3.Distance(Character.transform.position,
-                        enemy.transform.position);
-                    Debug.Log(dis);
-                    if (dis < Character._model.AttackDistance)
-                    {
-                        Character.stateMachine.SetBehaviorAttack(enemy);
-                        Character.AI.target = Character.transform;
-                    }
-               // }
-                //else if (enemy == null)
-               // {
-                //    Character.stateMachine.SetBehaviorIdle();
-                //    Character.SelectedEnemy = null;
-             //   }
-            }
-            catch (Exception e)
-            {
-                Debug.LogWarning(e);
-                Character.stateMachine.SetBehaviorIdle();
-            }
             
         }
 
         public void FixedUpdate()
         {
             
+        }
+
+        public void CustomUpdate()
+        {
+            enemy = Character.GetClosets();
+            try
+            {
+                var dis = Vector3.Distance(Character.transform.position,
+                    enemy.transform.position);
+                if (dis < Character._model.AttackDistance)
+                {
+                    Character.stateMachine.SetBehaviorAttack(enemy);
+                    Character.AI.target = Character.transform;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning(e);
+                Character.stateMachine.SetBehaviorIdle();
+            }
         }
     }
 }
