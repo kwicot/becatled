@@ -7,7 +7,7 @@ namespace Becatled.Character
     {
         protected override void Init()
         {
-            _model = new Character_Model()
+            _model = new Character_Model() //Инициализируем модель данных
             {
                 MoveSpeed = 10,
                 Damage = 10,

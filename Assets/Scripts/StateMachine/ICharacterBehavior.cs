@@ -8,6 +8,9 @@ namespace Becatled.CharacterCore.StateMachineCore
 {
     public interface ICharacterBehavior
     {
+        /*
+         * Интерфейс состояний
+         */
         public CharacterBase Character { get; set; }
         void Enter(CharacterBase controller,CharacterBase _enemy = null);
         void Exit();

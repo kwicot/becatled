@@ -5,6 +5,10 @@ namespace Becatled.CharacterCore.StateMachineCore
 {
     public class CharacterBehaviorAttack : ICharacterBehavior
     {
+        /*
+         * Состояние атаки протовника
+         * Атакует и ждёт результат
+         */
         public CharacterBase Character { get; set; }
         private CharacterBase enemy;
 

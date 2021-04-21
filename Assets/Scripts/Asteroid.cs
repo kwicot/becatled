@@ -25,6 +25,11 @@ namespace DefaultNamespace
 
         void Explosion()
         {
+            /*
+             * Поиск врагов входящих в убойный радиус
+             * С последующим толчком(Взрывная волна)
+             * И Убийством
+             */
             Instantiate(ExplosionParticle, transform.position, quaternion.identity).Play();
 
             CharacterBase[] characters = FindObjectsOfType<CharacterBase>();

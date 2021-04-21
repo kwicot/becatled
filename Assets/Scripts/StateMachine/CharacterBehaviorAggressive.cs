@@ -7,6 +7,10 @@ namespace Becatled.CharacterCore.StateMachineCore
 {
     public class CharacterBehaviorAggressive : ICharacterBehavior
     {
+        /*
+         * Состояние агресии
+         * Передвижение к противнику
+         */
         public CharacterBase Character { get; set; }
         private CharacterBase enemy;
 

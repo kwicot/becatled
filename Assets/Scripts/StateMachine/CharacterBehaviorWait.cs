@@ -5,6 +5,9 @@ namespace Becatled.CharacterCore.StateMachineCore
 {
     public class CharacterBehaviorWait : ICharacterBehavior
     {
+        /*
+         * Состояние подготовки к следующей атаке
+         */
         public CharacterBase Character { get; set; }
         private CharacterBase enemy;
 

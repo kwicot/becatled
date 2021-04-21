@@ -6,9 +6,13 @@ namespace Becatled.CharacterCore.StateMachineCore
 {
     public class StateMachine 
     {
-        protected Dictionary<Type, ICharacterBehavior> behaviorsMap;
+        /*
+         * Машина состояний
+         * Содержит в себе все состояния и манипулирует ими
+         */
+        protected Dictionary<Type, ICharacterBehavior> behaviorsMap; //Список всех состояний
         private Animator _characterAnimator;
-        private CharacterBase _character;
+        private CharacterBase _character; //Персонаж инициализирующий машину
 
         public ICharacterBehavior behaviorCurrent { get; protected set; }
 
@@ -27,14 +31,15 @@ namespace Becatled.CharacterCore.StateMachineCore
         protected void InitBehaviors()
         {
             behaviorsMap = new Dictionary<Type, ICharacterBehavior>();
-            
+            //Инициализация необходимых состояний
             behaviorsMap[typeof(CharacterBehaviorIdle)] = new CharacterBehaviorIdle();
             behaviorsMap[typeof(CharacterBehaviorWait)] = new CharacterBehaviorWait();
             behaviorsMap[typeof(CharacterBehaviorAttack)] = new CharacterBehaviorAttack();
             behaviorsMap[typeof(CharacterBehaviorAggressive)] = new CharacterBehaviorAggressive();
         }
-        protected void SetBehavior(ICharacterBehavior behavior)
+        protected void SetBehavior(ICharacterBehavior behavior)//Установка необходимого состояния 
         {
+            
             if (behaviorCurrent != null)
                 behaviorCurrent.Exit();
 
@@ -110,6 +115,6 @@ namespace Becatled.CharacterCore.StateMachineCore
             
             InitBehaviors();
             SetBehaviorIdle();
-        }
+        } 
     }
 }

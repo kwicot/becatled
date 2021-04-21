@@ -5,6 +5,10 @@ namespace Becatled.CharacterCore.StateMachineCore
 {
     public class CharacterBehaviorIdle : ICharacterBehavior
     {
+        /*
+         * Состояние покоя
+         * Ожидание и поиск врагов
+         */
         public CharacterBase Character { get; set; }
 
         public void Enter(CharacterBase controller,CharacterBase _enemy = null)

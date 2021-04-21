@@ -12,19 +12,31 @@ namespace Becatled.CharacterCore
 {
     public class CharacterBase : MonoBehaviour
     {
-        public StateMachine stateMachine { get; protected set; }
-        public Character_Model _model { get; protected set; }
-        public CharacterBase SelectedEnemy { get; set; }
-        public Animator _animator { get; private set; }
-        public AIDestinationSetter AI { get; private set; }
+        
+        /*
+         * Базовый класс персонажей
+         * Вся основная логика которая не имеет привязанности к конкретному типу персонажей
+         * должна находится здесь
+         * 
+         */
+        public StateMachine stateMachine { get; protected set; } //Машина состояний
+        public Character_Model _model { get; protected set; } //Модель данных
+        public CharacterBase SelectedEnemy { get; set; } //Ближайший враг  
+        public Animator _animator { get; private set; } 
+        public AIDestinationSetter AI { get; private set; } //Навигация
 
-        public List<CharacterBase> L_CharacterBase { get; private set; }
+        public List<CharacterBase> L_CharacterBase { get; private set; } //Список врагов в области видимости
         public CapsuleCollider trigger;
-        public RagdollController RagdollController;
+        public RagdollController RagdollController; //Контроллер тряпичной куклы
 
 
         public ParticleSystem BloodParticles;
 
+            /*
+             * Выключаем режим тряпичной куклы
+             * инициализируем навигатор, аниматор, лист врагов и машину состояний
+             * И вызываем виртуальный метод инициализации для наследуемых классов
+             */
         void Start()
         {
             RagdollController.RagdollOFF();
@@ -35,12 +47,13 @@ namespace Becatled.CharacterCore
             stateMachine = new StateMachine(this, _animator);
         }
 
-        private float inteval = 0.20f;
+        private float customUpdateInterval = 4; //Интервал кастомных обновлений (Количество обновлений в секунду)
+        private float customUpdateTime = 0.20f; //таймер кастомного обновления 
         private void Update()
         {
             stateMachine.Update();
-            inteval -= Time.deltaTime;
-            if(inteval <= 0) CustomUpdate();
+            customUpdateTime -= Time.deltaTime;
+            if(customUpdateTime <= 0) CustomUpdate();
         }
 
         private void FixedUpdate()
@@ -50,7 +63,7 @@ namespace Becatled.CharacterCore
 
         void CustomUpdate()
         {
-            inteval = 0.20f;
+            customUpdateTime = 60 / customUpdateInterval;
             
             stateMachine.behaviorCurrent.CustomUpdate();
         }
@@ -60,6 +73,10 @@ namespace Becatled.CharacterCore
 
         }
 
+        /*
+         * Поиск ближайшего врага
+         * Установка состояния в зависимости от исхода
+         */
         public CharacterBase GetClosets()
         {
             try
@@ -116,14 +133,14 @@ namespace Becatled.CharacterCore
                 Death();
         }
 
-        public void DoMeleeDamage()
+        public void DoMeleeDamage() //Метод аниматора
         {
             Debug.Log("Attack");
             if (SelectedEnemy != null)
                 SelectedEnemy.MakeDamage(_model.Damage);
         }
 
-        public void EndMeleeAttack()
+        public void EndMeleeAttack() //Метод аниматора
         {
             Debug.Log("End attack" + SelectedEnemy);
             if (SelectedEnemy != null)
@@ -131,6 +148,7 @@ namespace Becatled.CharacterCore
             else stateMachine.SetBehaviorIdle();
         }
 
+        // уничтожаем всё лишнее и включаем тряпичную куклу
         public void Death()
         {
             Destroy(_animator);
