@@ -1,0 +1,10 @@
+Library/
+.vs/
+.idea/
+Temp/
+obj/
+Logs/
+*.csproj
+Packages/manifest.json
+Apk/ballfall_0.0.01.apk
+Apk/
